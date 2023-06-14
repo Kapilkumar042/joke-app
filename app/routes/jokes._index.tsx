@@ -14,10 +14,6 @@ export default function JokesIndexRoute(){
     const data = useLoaderData<typeof loader>();
     return(
     <>
-    <div><form>
-  <input type="text" name="query" placeholder="Search joke..." />
-</form>
-    </div>
         <div>
             <p>Here's a random joke:</p>
             <p>
