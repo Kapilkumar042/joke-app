@@ -3,6 +3,8 @@ import type { LinksFunction } from "@remix-run/node";
 import stylesUrl from "~/styles/jokes.css"
 import { json } from "@remix-run/node";
 import {db} from "~/utils/db.server"
+
+import { EditOutlined} from '@ant-design/icons';
 export const links: LinksFunction=()=>[
     {rel:"stylesheet",href:stylesUrl}
 ]
@@ -46,7 +48,8 @@ export default function JokesRoute(){
                            {
                             data.jokeListItem.map(({id, name})=>(
                                 <li key={id}>
-                                    <Link to={id}>{name}</Link>
+                                    <Link to={id}>{name} </Link>
+                                    <Link to={`/jokes/update`}><EditOutlined /></Link>
                                 </li>
                             ))
                            }
