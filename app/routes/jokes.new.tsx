@@ -3,7 +3,7 @@ import { redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import {db} from "~/utils/db.server"
 import { badRequest } from "~/utils/request.server";
-
+import { requireUserId } from "~/utils/session.server";
 function validateJokeContent(content: string){
     if(content.length<10){
         return "That joke is too short";
@@ -16,6 +16,7 @@ function validateJokeName(name: string){
     }
 }
 export const action=async({request}:ActionArgs)=>{
+    const userId= await requireUserId(request);
     const form =await request.formData();
     const content = form.get("content");
     const name=form.get("name");
@@ -43,7 +44,7 @@ export const action=async({request}:ActionArgs)=>{
         })
     }
 
-    const joke=await db.joke.create({data: fields});
+    const joke=await db.joke.create({data: {...fields, jokesterId:userIds}});
     return redirect(`/jokes/${joke.id}`)
 }
 export default function NewjokeRoute(){
@@ -114,4 +115,13 @@ export default function NewjokeRoute(){
             </form>
         </div>
     );
+}
+
+export function ErrorBoundary(){
+    return(
+        <div className="error-container">
+            Something unexpected went wrong. Sorry about that.
+        </div>
+    )
+
 }

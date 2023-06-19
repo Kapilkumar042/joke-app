@@ -44,7 +44,7 @@ export const action = async ({ params,request }: ActionArgs) => {
 
 export default function JokeUpdate() {
   const data = useLoaderData<typeof loader>();
-  console.log("data values",data);
+  // console.log("data values",data);
   
 
   return (
@@ -53,8 +53,8 @@ export default function JokeUpdate() {
       {/* <p>{data.joke.content}</p> */}
       {/* <Link to=".">"{data.joke.name}"</Link> */}
       <form method="post">
-      <textarea  autoFocus name="content" id="" value={data.joke.content} rows={5} cols={50}></textarea>
       <input type="text" name="name" value={data.joke.name} id="" />
+      <textarea  autoFocus name="content" id="" value={data.joke.content} rows={5} cols={50}></textarea>
       <button type="submit" className="button">
                         Update
       </button>

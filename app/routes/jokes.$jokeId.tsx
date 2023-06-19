@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useParams } from "@remix-run/react";
 import { findJoke, deleteJoke } from "~/model/joke.server";
 import { DeleteOutlined} from '@ant-design/icons';
 
@@ -64,4 +64,14 @@ console.log("data values", data);
       </form>
     </div>
   );
+}
+
+export function ErrorBoundaru(){
+  const {jokeId}=useParams();
+  return(
+    <div className="error-container">
+      There was an error loading joke by the id "${jokeId}".
+      Sorry.
+    </div>
+  )
 }

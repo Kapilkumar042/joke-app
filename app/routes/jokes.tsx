@@ -1,8 +1,9 @@
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
+import type { LinksFunction, LoaderArgs } from "@remix-run/node";
 import stylesUrl from "~/styles/jokes.css"
 import { json } from "@remix-run/node";
 import {db} from "~/utils/db.server"
+import { getUser } from "~/utils/session.server";
 
 import { EditOutlined} from '@ant-design/icons';
 export const links: LinksFunction=()=>[
@@ -10,14 +11,14 @@ export const links: LinksFunction=()=>[
 ]
 
 // loader
-export const loader = async()=>{
-    return json({
-        jokeListItem:await db.joke.findMany({
+export const loader = async({request}:LoaderArgs)=>{
+    const jokeListItem= await db.joke.findMany({
             orderBy:{createdAt:"desc"},
             select:{id:true,name:true},
             take:5,
-        }),
-    });
+        });
+        const user=await getUser(request);
+    return json({jokeListItem, user})
 };
 
 export default function JokesRoute(){
@@ -36,6 +37,18 @@ export default function JokesRoute(){
                         <span className="logo-medium">J🤪KES</span>
                     </Link>
                 </h1>
+                {data.user?(
+                    <div className="user-info">
+                        <span>{`Hi ${data.user.username}`}</span>
+                        <Form action="/logout" method="post">
+                            <button className="button">
+                                Logout
+                           </button>
+                        </Form>
+                    </div>
+                ):(
+                    <Link to="/login">Login</Link>
+                )}
                 </div>
             </header>
             
@@ -49,7 +62,7 @@ export default function JokesRoute(){
                             data.jokeListItem.map(({id, name})=>(
                                 <li key={id}>
                                     <Link to={id}>{name} </Link>
-                                    <Link to={`/jokes/update`}><EditOutlined /></Link>
+                                    <Link to={`/jokes/update/${id}`}><EditOutlined /></Link>
                                 </li>
                             ))
                            }
