@@ -100,6 +100,8 @@ export async function getUser(request: Request){
     if(!user){
         throw logout(request)
     }
+    console.log("userinfo",user);
+    
     return user;
 }
 

@@ -58,18 +58,18 @@ export default function App(){
   )
 }
 
-export function ErrorBoundary(){
-  const error = useRouteError();
+// export function ErrorBoundary(){
+//   const error = useRouteError();
 
-  const errorMessage=
-  error instanceof Error?error.message
-  :"unknown error";
-  return(
-    <Document title="Uh-oh">
-      <div className="error-container">
-        <h1>App Error</h1>
-        <pre>{errorMessage}</pre>
-      </div>
-    </Document>
-  )
-}
+//   const errorMessage=
+//   error instanceof Error?error.message
+//   :"unknown error";
+//   return(
+//     <Document title="Uh-oh">
+//       <div className="error-container">
+//         <h1>App Error</h1>
+//         <pre>{errorMessage}</pre>
+//       </div>
+//     </Document>
+//   )
+// }

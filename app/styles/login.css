@@ -62,4 +62,7 @@
     text-decoration-style: wavy;
     text-decoration-thickness: 1px;
   }
-  
+  .register-comp{
+    text-decoration: none;
+    color: #3a0d54;
+  }

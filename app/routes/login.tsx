@@ -137,7 +137,7 @@ export default function Login() {
               value={SearchParams.get("redirectTo") ?? undefined}
             />
             <fieldset>
-              <legend className="sr-only">Login Or Register</legend>
+              {/* <legend className="sr-only">Login Or Register</legend>
               <label>
                 <input
                   type="radio"
@@ -149,15 +149,15 @@ export default function Login() {
                   }
                 />{" "}
                 Login
-              </label>
+              </label> */}
               <label>
-                <input
+                {/* <input
                   type="radio"
                   name="loginType"
                   value="register"
                   defaultChecked={actionData?.fields?.loginType === "register"}
-                />{" "}
-                Register
+                />{" "} */}
+                <Link to="/register" className="register-comp">New User Register</Link>
               </label>
             </fieldset>
             <div>
@@ -215,6 +215,7 @@ export default function Login() {
                 </p>
               ) : null}
             </div>
+          <Link to="/forgetpassword" className="register-comp">Forget password</Link>
             <button type="submit" className="button">
               Submit
             </button>

@@ -5,6 +5,7 @@ import { json } from "@remix-run/node";
 import {db} from "~/utils/db.server"
 import { getUser } from "~/utils/session.server";
 
+import avatarImg from "~/assets/images/avatar.png"
 import { EditOutlined} from '@ant-design/icons';
 export const links: LinksFunction=()=>[
     {rel:"stylesheet",href:stylesUrl}
@@ -17,12 +18,16 @@ export const loader = async({request}:LoaderArgs)=>{
             select:{id:true,name:true},
             take:5,
         });
+        console.log("jokes",jokeListItem);
+        
         const user=await getUser(request);
+        console.log("user",user);
+        
     return json({jokeListItem, user})
 };
 
 export default function JokesRoute(){
-    const data=useLoaderData<typeof loader>();
+    const data=useLoaderData<typeof loader>();        
     return(
     <>
         <div className="jokes-layout">
@@ -45,6 +50,11 @@ export default function JokesRoute(){
                                 Logout
                            </button>
                         </Form>
+                          <div>
+                                    <Link to="/updateprofile">
+                                     <img className="profile-img" src={avatarImg} alt="Pic not here" />
+                                    </Link>
+                              </div>
                     </div>
                 ):(
                     <Link to="/login">Login</Link>
@@ -71,7 +81,7 @@ export default function JokesRoute(){
                             Add your own
                         </Link>
                     </div>
-                    <div className="jokws-outlet">
+                    <div className="jokes-outlet">
                             <Outlet/>
                     </div>
                 </div>

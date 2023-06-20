@@ -16,6 +16,8 @@ export const loader = async ({ params }: LoaderArgs) => {
   if (!joke) {
     throw new Error("Joke not found");
   }
+  console.log("joke",joke);
+  
   return json({ joke });
 };
 
