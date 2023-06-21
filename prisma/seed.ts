@@ -8,6 +8,9 @@ async function seed() {
           // this is a hashed version of "twixrox"
           passwordHash:
             "$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u",
+            email: "kody@gmail.com",
+            phone:"1234567890",
+            passion:"web developer",
         },
       });
   await Promise.all(

@@ -37,14 +37,14 @@ function validateUrl(url: string) {
 
 export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData();
-  const loginType = form.get("loginType");
+  // const loginType = form.get("loginType");
   const password = form.get("password");
   const username = form.get("username");
   const redirectTo = validateUrl(
     (form.get("redirectTo") as string) || "/jokes"
   );
   if (
-    typeof loginType !== "string" ||
+    // typeof loginType !== "string" ||
     typeof password !== "string" ||
     typeof username !== "string"
   ) {
@@ -55,7 +55,7 @@ export const action = async ({ request }: ActionArgs) => {
     });
   }
 
-  const fields = { loginType, password, username };
+  const fields = { password, username };
   const fieldErrors = {
     password: validatePassword(password),
     username: validateUsername(username),
@@ -68,58 +68,18 @@ export const action = async ({ request }: ActionArgs) => {
       formError: null,
     });
   }
-  switch (loginType) {
-    case "login": {
-      const user = await login({ username, password });
-      console.log({ user });
-      if (!user) {
-        return badRequest({
-          fieldErrors: null,
-          fields,
-          formError: "Username/Password combination is incorrect",
-        });
-      }
-      return createUserSeccion(user.id, redirectTo);
-
-      // return badRequest({
-      //   fieldErrors:null,
-      //   fields,
-      //   formError:"Not implemented",
-      // })
-    }
-    case "register": {
-      const userExists = await db.user.findFirst({
-        where: { username },
-      });
-      if (userExists) {
-        return badRequest({
-          fieldErrors: null,
-          fields,
-          formError: `User with username ${username} already exists`,
-        });
-      }
-      // create the user
-      const user = await register({ username, password });
-      if (!user) {
-        return badRequest({
-          fieldErrors: null,
-          fields,
-          formError: "Something went wrong trying to create a new user.",
-        });
-      }
-      // create their session and redirect to /jokes
-      return createUserSeccion(user.id, redirectTo);
-    }
-    // return redirect ("/")
-    default: {
-      return badRequest({
-        fieldErrors: null,
-        fields,
-        formError: "login type invalid",
-      });
-    }
+  // switch (loginType) {
+  // case "login": {
+  const user = await login({ username, password });
+  console.log({ user });
+  if (!user) {
+    return badRequest({
+      fieldErrors: null,
+      fields,
+      formError: "Username/Password combination is incorrect",
+    });
   }
-  
+  return createUserSeccion(user.id, redirectTo);
 };
 
 export default function Login() {
@@ -157,7 +117,9 @@ export default function Login() {
                   value="register"
                   defaultChecked={actionData?.fields?.loginType === "register"}
                 />{" "} */}
-                <Link to="/register" className="register-comp">New User Register</Link>
+                <Link to="/register" className="register-comp">
+                  New User Register
+                </Link>
               </label>
             </fieldset>
             <div>
@@ -215,7 +177,9 @@ export default function Login() {
                 </p>
               ) : null}
             </div>
-          <Link to="/forgetpassword" className="register-comp">Forget password</Link>
+            <Link to="/forgetpassword" className="register-comp">
+              Forgot password
+            </Link>
             <button type="submit" className="button">
               Submit
             </button>

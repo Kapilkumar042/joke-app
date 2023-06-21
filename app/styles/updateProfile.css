@@ -1,12 +1,38 @@
+.updateProfile{
+    display: flex;
+}
+.picData img{
+    margin-top: 60px;
+    width: 600px;
+}
+
+.picData input{
+    display: none;
+}
+.update-profile-text{
+    padding: 10px 0 0 230px;
+}
 .update{
     text-align: center;
     /* background-color: #fff; */
     /* color: #3a0d54; */
-    margin-top: 40px;
+    margin-top: 60px;
+    padding-left: 100px;
+    width: 30%;
 }
 
-.info{
+Form{
+    gap: 0;
+}
+label{
     text-align: left;
-    font-size: 16px;
-    padding: 20px 0 0 40px;
+    margin-top: 20px;
+}
+
+.update-list{
+    display: flex;
+    gap: 1rem;
+    margin-top: 30px;
+    list-style: none;
+    padding-left: 150px;
 }

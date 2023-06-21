@@ -3,7 +3,15 @@ import {
 } from "@remix-run/node"
 import bcrypt from "bcryptjs";
 import {db} from "./db.server";
+import { User } from "@prisma/client";
 
+type RegisterForm={
+    password: string;
+    username:string;
+    email:string;
+    phone:string;
+    passion:string;
+}
 type LoginForm={
     password: string;
     username:string;
@@ -12,13 +20,25 @@ type LoginForm={
 export async function register({
     password, 
     username,
-}:LoginForm){
+    email,
+    phone,
+    passion,
+}:RegisterForm){
    const passwordHash = await bcrypt.hash(password, 10);
    const user = await db.user.create({
-    data:{passwordHash, username},
+    data:{passwordHash, username, email, phone, passion},
    });
    return { id: user.id, username}
 }
+
+// export async function updateUser(id: User["id"], 
+// username:string,email:string,passion:string,phone:string){
+//     return db.user.update({
+//         where:{id},
+//         data:{username,email,passion,phone}
+//     })
+// }
+
 
 
 export async function login({
@@ -94,16 +114,29 @@ export async function getUser(request: Request){
         return null
     }
     const user=await db.user.findUnique({
-        select:{id:true, username:true},
+        select:{id:true, username:true,email:true,phone:true,passion:true},
         where:{id:userId},
     });
     if(!user){
         throw logout(request)
     }
-    console.log("userinfo",user);
+    console.log("userid",userId);
     
     return user;
 }
+//update user
+// export async function updateUser(request:Request){
+//     const userId=await getUserId(request);
+//     console.log("userNewid",userId);
+//     if(typeof userId !== "string"){
+//         return null
+//     }
+//     const user=await db.user.update({
+//         where:{id:userId},
+//         data: {email:""},
+//     })
+    
+// }
 
 export async function logout(request: Request){
     const session=await getUserSession(request);
