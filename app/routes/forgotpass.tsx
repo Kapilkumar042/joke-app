@@ -1,30 +1,10 @@
-import styleUrl from "~/styles/login.css";
-import { LinksFunction, ActionArgs, redirect, ActionFunction } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
-import { db } from "~/utils/db.server";
-import { forgotPassword, requireUserId } from "~/utils/session.server";
+import styleUrl from "~/styles/login.css";
+import { LinksFunction  } from "@remix-run/node";
 export const links: LinksFunction = () => [
     { rel: "stylesheet", href: styleUrl },
   ];
-
-  export const action = async ({ request }:ActionArgs) => {
-    const form = await request.formData();
-    const email = form.get("email");
-    const passwordHash = form.get("passwordHash");
-    // const confirmPassword=form.get("confirmpassword")
-  // const fields={passwordHash}
-    // Update the user record in the database with the new password
-    // const usernew=await db.user.update({
-    //   where: {
-    //     email
-    //   },
-    //   data:{passwordHash} ,
-    // });
-    // console.log("usernew", usernew);
-    await forgotPassword(email,passwordHash)   
-    return redirect("/login")
-  }
-export default function forgetpassword() {
+export default function forgotpass() {
   return (
     <div className="container">
         <div className="content" data-light="">
@@ -34,10 +14,10 @@ export default function forgetpassword() {
              <label htmlFor="email">Email</label>
              <input type="email" name="email" id="email" />
            </div>
-           <div>
+           {/* <div>
              <label htmlFor="password">Password</label>
              <input type="password" name="passwordHash" id="password" />
-           </div>
+           </div> */}
            {/* <div>
              <label htmlFor="confirm-password">Confirm password</label>
              <input type="password" name="confirmpassword" id="confirm-password" />

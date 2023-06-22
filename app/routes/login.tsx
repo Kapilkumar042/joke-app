@@ -4,15 +4,25 @@ import { Form, Link, useSearchParams, useActionData } from "@remix-run/react";
 // const style:React.CSSProperties={backgroundColor:"#1677ff"}
 
 import styleUrl from "~/styles/login.css";
-import { LinksFunction, ActionArgs, redirect } from "@remix-run/node";
+import { LinksFunction, ActionArgs, redirect, V2_MetaFunction } from "@remix-run/node";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
 import { createUserSeccion, login, register } from "~/utils/session.server";
+import { useState } from "react";
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styleUrl },
 ];
 
+export const meta:V2_MetaFunction=()=>{
+  const description=
+  "Login to submit your own jokes to Remix Jokes:";
+  return[
+    {name:"description", content: description},
+    {name:"twitter:description", content:"description"},
+    {title:"Remix Jokes | Login"},
+  ]
+}
 //validationfunction
 function validateUsername(username: string) {
   if (username.length < 3) {
@@ -85,6 +95,11 @@ export const action = async ({ request }: ActionArgs) => {
 export default function Login() {
   const actionData = useActionData<typeof action>();
   const [SearchParams] = useSearchParams();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <>
       <div className="container">
@@ -149,7 +164,7 @@ export default function Login() {
             <div>
               <label htmlFor="password-input">Password</label>
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password-input"
                 name="password"
                 defaultValue={actionData?.fields?.password}
@@ -160,6 +175,9 @@ export default function Login() {
                     : undefined
                 }
               />
+               <p onClick={toggleShowPassword}>
+        {showPassword ? 'Hide Password' : 'Show Password'}
+      </p>
               {actionData?.fieldErrors?.password ? (
                 <p
                   className="form-validation-error"

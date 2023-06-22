@@ -2,10 +2,11 @@ import {
   Links,
   LiveReload,
    Outlet,
-   useRouteError
+   useRouteError,
+   isRouteErrorResponse,Meta
    } from "@remix-run/react";
    import { Children, PropsWithChildren } from "react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import globalLargeStylesUrl from "~/styles/global-large.css"
 import globalMediumStylesUrl from "~/styles/global-medium.css"
 import globalStylesUrl from "~/styles/global.css"
@@ -26,9 +27,19 @@ export const links : LinksFunction=()=>[
   },
 ];
 
+export const meta: V2_MetaFunction=()=>{
+  const description="Learn Remix and laugh at the same time:";
+  return [
+    {name:"description", content:description},
+    {name:"twitter:description", content:description},
+    {title:"Remix: So great, it funny:"},
+  ];
+
+};
+
 function Document({
   children,
-  title = "Remix: So great, it's funny!",
+  title,
 }: PropsWithChildren<{ title?: string }>) {
   return (
     <html lang="en">
@@ -38,7 +49,11 @@ function Document({
           name="viewport"
           content="width=device-width,initial-scale=1"
         />
-        <title>{title}</title>
+        <meta name="twitter:creator" content="@remix_run"/>
+        <meta name="twitter:site" content="@remix_run"/>
+        <meta name="twitter:title" content="Remix Jokes"/>
+        <Meta/>
+        {title ? <title>{title}</title> : null}
         <Links />
       </head>
       <body>
@@ -58,18 +73,29 @@ export default function App(){
   )
 }
 
-// export function ErrorBoundary(){
-//   const error = useRouteError();
+export function ErrorBoundary(){
+  const error = useRouteError();
+  if(isRouteErrorResponse(error)){
+    return(
+      <Document title={`${error.status} ${error.statusText}`}>
+        <div className="error-container">
+          <h1>
+            {error.status}{error.statusText}
+          </h1>
+        </div>
+      </Document>
+    )
+  }
 
-//   const errorMessage=
-//   error instanceof Error?error.message
-//   :"unknown error";
-//   return(
-//     <Document title="Uh-oh">
-//       <div className="error-container">
-//         <h1>App Error</h1>
-//         <pre>{errorMessage}</pre>
-//       </div>
-//     </Document>
-//   )
-// }
+  const errorMessage=
+  error instanceof Error?error.message
+  :"unknown error";
+  return(
+    <Document title="Uh-oh">
+      <div className="error-container">
+        <h1>App Error</h1>
+        <pre>{errorMessage}</pre>
+      </div>
+    </Document>
+  )
+}

@@ -1,6 +1,7 @@
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData, useParams } from "@remix-run/react";
+import { Link, useLoaderData, useParams,
+useRouteError, isRouteErrorResponse} from "@remix-run/react";
 import { findJoke, deleteJoke } from "~/model/joke.server";
 import { DeleteOutlined} from '@ant-design/icons';
 
@@ -8,13 +9,29 @@ import { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { db } from "~/utils/db.server";
 
+export const meta:V2_MetaFunction<typeof loader>=({
+  data,
+})=>{
+  const {description,title} =data?{
+    description:`Enjoy the "${data.joke.name}" joke and much more`,
+    title:`"${data.joke.name}" joke`
+  }:
+  { description:"No joke found", title:"No joke"};
+  return[
+    {name:"description", content:description},
+    {name:"twitter:descrition", content:"description"},
+    {title},
+  ];
+};
 export const loader = async ({ params }: LoaderArgs) => {
   // const joke = await db.joke.findUnique({
   //   where: { id: params.jokeId },
   // });
   const joke = await findJoke(params.jokeId)
   if (!joke) {
-    throw new Error("Joke not found");
+    throw new Response("Joke not found",{
+      status:404,
+    });
   }
   console.log("joke",joke);
   
@@ -70,6 +87,14 @@ console.log("data values", data);
 
 export function ErrorBoundaru(){
   const {jokeId}=useParams();
+  const error = useRouteError();
+  if(isRouteErrorResponse(error)&&error.status===404){
+    return(
+      <div className="error-container">
+        Huh? What the heck is "{jokeId}"?
+      </div>
+    )
+  }
   return(
     <div className="error-container">
       There was an error loading joke by the id "${jokeId}".

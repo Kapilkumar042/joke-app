@@ -16,6 +16,10 @@ type LoginForm={
     password: string;
     username:string;
 };
+type forgotData={
+    email:string;
+    password:string;
+}
 
 export async function register({
     password, 
@@ -31,13 +35,37 @@ export async function register({
    return { id: user.id, username}
 }
 
-// export async function updateUser(id: User["id"], 
-// username:string,email:string,passion:string,phone:string){
-//     return db.user.update({
-//         where:{id},
-//         data:{username,email,passion,phone}
-//     })
-// }
+async function updatePassword(email: string, password: string) {
+    const passwordHash = await bcrypt.hash(password, 10);
+    await db.user.update({
+      where: {
+        email: email
+      },
+      data: {
+        passwordHash: passwordHash
+      }
+    });
+  }
+  
+  //forgotpassword
+  export async function forgotPassword(email: string, newPassword: string) {
+    // C user exists
+    const user = await db.user.findUnique({
+      where: {
+        email: email
+      }
+    });
+  
+    if (!user) {
+      throw new Error('User not found');
+    }
+  
+    // Update the user's password
+    await updatePassword(email, newPassword);
+  }
+
+
+
 
 
 
