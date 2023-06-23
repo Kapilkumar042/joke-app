@@ -1,9 +1,17 @@
 import { Form, Link } from "@remix-run/react";
 import styleUrl from "~/styles/login.css";
-import { LinksFunction  } from "@remix-run/node";
+import { ActionArgs, LinksFunction, redirect  } from "@remix-run/node";
+import { resetPassword,sendResetEmail } from "~/utils/sendMail";
 export const links: LinksFunction = () => [
     { rel: "stylesheet", href: styleUrl },
   ];
+
+  export const action = async ({request}:ActionArgs)=>{
+    const form = await request.formData();
+    const email=form.get("email");
+    await sendResetEmail(email);
+    return redirect("/varificationcode")
+  }
 export default function forgotpass() {
   return (
     <div className="container">
@@ -14,14 +22,6 @@ export default function forgotpass() {
              <label htmlFor="email">Email</label>
              <input type="email" name="email" id="email" />
            </div>
-           {/* <div>
-             <label htmlFor="password">Password</label>
-             <input type="password" name="passwordHash" id="password" />
-           </div> */}
-           {/* <div>
-             <label htmlFor="confirm-password">Confirm password</label>
-             <input type="password" name="confirmpassword" id="confirm-password" />
-           </div> */}
            <fieldset>
           <label>
           <Link to="/login" className="register-comp">Have an account? login</Link>

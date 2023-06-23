@@ -4,7 +4,6 @@ import stylesUrl from "~/styles/jokes.css"
 import { json } from "@remix-run/node";
 import {db} from "~/utils/db.server"
 import { getUser } from "~/utils/session.server";
-
 import avatarImg from "~/assets/images/avatar.png"
 import { EditOutlined} from '@ant-design/icons';
 export const links: LinksFunction=()=>[
@@ -71,7 +70,7 @@ export default function JokesRoute(){
                            {
                             data.jokeListItem.map(({id, name})=>(
                                 <li key={id}>
-                                    <Link to={id}>{name} </Link>
+                                    <Link prefetch="intent" to={id}>{name} </Link>
                                     <Link to={`/jokes/update/${id}`}><EditOutlined /></Link>
                                 </li>
                             ))
@@ -86,6 +85,13 @@ export default function JokesRoute(){
                     </div>
                 </div>
             </main>
+            <footer className="jokes-footer">
+        <div className="container">
+          <Link reloadDocument to="/jokes.rss">
+            RSS
+          </Link>
+        </div>
+      </footer>
         </div>
         </>
     )
