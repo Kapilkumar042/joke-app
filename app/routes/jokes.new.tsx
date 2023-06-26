@@ -53,7 +53,7 @@ export const action=async({request}:ActionArgs)=>{
         })
     }
 
-    const joke=await db.joke.create({data: {...fields, jokesterId:userIds}});
+    const joke=await db.joke.create({data: {...fields, jokesterId:userId}});
     return redirect(`/jokes/${joke.id}`)
 }
 export default function NewjokeRoute(){

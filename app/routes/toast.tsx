@@ -60,6 +60,7 @@ import {
           >
             bottomRight
           </Button>
+          <Button type='primary'>hello</Button>
         </Space>
       </Context.Provider>
     );

@@ -6,6 +6,7 @@ import {db} from "~/utils/db.server"
 import { getUser } from "~/utils/session.server";
 import avatarImg from "~/assets/images/avatar.png"
 import { EditOutlined} from '@ant-design/icons';
+import { Button } from "antd";
 export const links: LinksFunction=()=>[
     {rel:"stylesheet",href:stylesUrl}
 ]
@@ -79,6 +80,7 @@ export default function JokesRoute(){
                         <Link to="new" className="button">
                             Add your own
                         </Link>
+                        <Button type="primary">hello</Button>
                     </div>
                     <div className="jokes-outlet">
                             <Outlet/>

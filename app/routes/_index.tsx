@@ -18,6 +18,9 @@ export default function IndexRoute(){
               <Link to="jokes">Read Jokes</Link>
             </li>
             <li>
+              <Link to="product">View our store</Link>
+            </li>
+            <li>
               <Link to="/jokes.rss">rss</Link>
             </li>
           </ul>

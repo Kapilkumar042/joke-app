@@ -5,6 +5,8 @@ import { ActionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { db } from "~/utils/db.server";
 import { findJoke, updateJoke } from "~/model/joke.server";
+import { useState } from "react";
+
 
 export const loader = async ({ params }: LoaderArgs) => {
 //   const joke = await db.joke.findUnique({
@@ -44,6 +46,7 @@ export const action = async ({ params,request }: ActionArgs) => {
 
 export default function JokeUpdate() {
   const data = useLoaderData<typeof loader>();
+  const [inputValue, setInputValue] = useState('')
   // console.log("data values",data);
   
 
@@ -53,8 +56,9 @@ export default function JokeUpdate() {
       {/* <p>{data.joke.content}</p> */}
       {/* <Link to=".">"{data.joke.name}"</Link> */}
       <form method="post">
-      <input type="text" name="name" value={data.joke.name} id="" />
-      <textarea  autoFocus name="content" id="" value={data.joke.content} rows={5} cols={50}></textarea>
+      <input type="text" name="name" defaultValue={data.joke.name} id="" onChange={(event) => setInputValue(event.target.value)}/>
+      <textarea  autoFocus name="content" id="" defaultValue={data.joke.content} rows={5} cols={50} 
+      onChange={(event) => setInputValue(event.target.value)}></textarea>
       <button type="submit" className="button">
                         Update
       </button>

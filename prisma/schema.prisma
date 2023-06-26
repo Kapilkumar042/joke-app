@@ -18,6 +18,7 @@ model User {
   email        String   @unique
   phone        String
   passion      String
+  image        Image?  
   passwordHash String
   jokes        Joke[]
 }
@@ -30,4 +31,12 @@ model Joke {
  updatedAt  DateTime @updatedAt
  name       String
  content    String
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  path      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
