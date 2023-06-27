@@ -1,0 +1,13 @@
+.ant-spin-container{
+    position: relative;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ant-card{
+    margin: 40px;
+}
+.itemCardBadge{
+    margin: 40px;
+}
