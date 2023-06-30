@@ -1,0 +1,21 @@
+.update-product{
+margin: 2rem 15rem  0 15rem;
+align-items: center;
+}
+form{
+    width: 500px;
+}
+
+input{
+    width: 500px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    height: 38px;
+    border-radius: 5px;
+    outline: #ccc;
+    border: 1px solid #ccc;
+}
+
+input::placeholder{
+    padding-left: 10px;
+}
