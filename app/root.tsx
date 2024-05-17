@@ -10,23 +10,31 @@ import {
 import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import globalLargeStylesUrl from "~/styles/global-large.css"
 import globalMediumStylesUrl from "~/styles/global-medium.css"
-import globalStylesUrl from "~/styles/global.css"
-import styles from 'antd/dist/reset.css';
+// import globalStylesUrl from "~/styles/global.css"
+import styles1 from 'antd/dist/reset.css';
+// import stylesheet from "~/tailwind.css";
+
+import styles from "./globals.css"
+import { cssBundleHref } from "@remix-run/css-bundle";
 
 export const links : LinksFunction=()=>[
-  {rel:"stylesheet",href: globalStylesUrl},
+  // {rel:"stylesheet",href: globalStylesUrl},
   {
     rel:"stylesheet",
     href:globalMediumStylesUrl,
     mwdia:"print, (min-width:640px)",
   },
-  {rel:"stylesheet",href: styles},
+  {rel:"stylesheet",href: styles1},
   {
     rel:"stylesheet",
     href: globalLargeStylesUrl,
     media:"screen and (min-width:1024px)",
   },
+  // { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: styles },
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
+
 
 export const meta: V2_MetaFunction=()=>{
   const description="Learn Remix and laugh at the same time:";

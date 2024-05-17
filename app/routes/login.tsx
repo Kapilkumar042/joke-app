@@ -4,25 +4,32 @@ import { Form, Link, useSearchParams, useActionData } from "@remix-run/react";
 // const style:React.CSSProperties={backgroundColor:"#1677ff"}
 
 import styleUrl from "~/styles/login.css";
-import { LinksFunction, ActionArgs, redirect, V2_MetaFunction } from "@remix-run/node";
+import {
+  LinksFunction,
+  ActionArgs,
+  redirect,
+  V2_MetaFunction,
+} from "@remix-run/node";
 
 import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
 import { createUserSeccion, login, register } from "~/utils/session.server";
 import { useState } from "react";
+
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiOutlineEye } from "react-icons/ai";
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styleUrl },
 ];
 
-export const meta:V2_MetaFunction=()=>{
-  const description=
-  "Login to submit your own jokes to Remix Jokes:";
-  return[
-    {name:"description", content: description},
-    {name:"twitter:description", content:"description"},
-    {title:"Remix Jokes | Login"},
-  ]
-}
+export const meta: V2_MetaFunction = () => {
+  const description = "Login to submit your own jokes to Remix Jokes:";
+  return [
+    { name: "description", content: description },
+    { name: "twitter:description", content: "description" },
+    { title: "Remix Jokes | Login" },
+  ];
+};
 //validationfunction
 function validateUsername(username: string) {
   if (username.length < 3) {
@@ -38,11 +45,11 @@ function validatePassword(password: string) {
 
 // validate url
 function validateUrl(url: string) {
-  const urls = ["/jokes", "/", "https://remix.run"];
+  const urls = ["/dashboardcontainerv1/newoverview", "/", "https://remix.run"];
   if (urls.includes(url)) {
     return url;
   }
-  return "/jokes";
+  return "/dashboardcontainerv1/newoverview";
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -51,7 +58,7 @@ export const action = async ({ request }: ActionArgs) => {
   const password = form.get("password");
   const username = form.get("username");
   const redirectTo = validateUrl(
-    (form.get("redirectTo") as string) || "/jokes"
+    (form.get("redirectTo") as string) || "/dashboardcontainerv1/newoverview"
   );
   if (
     // typeof loginType !== "string" ||
@@ -102,17 +109,21 @@ export default function Login() {
   };
   return (
     <>
-      <div className="container">
-        <div className="content" data-light="">
-          <h1>Login</h1>
-          <Form method="post">
-            <input
-              type="hidden"
-              name="redirectTo"
-              value={SearchParams.get("redirectTo") ?? undefined}
-            />
-            <fieldset>
-              {/* <legend className="sr-only">Login Or Register</legend>
+      <div className="bg-[#F9FAFB] h-screen">
+        <div className="text-center">
+          <h1 className="text-3xl pt-16 font-serif font-extrabold mb-2">
+            Login in to your account
+          </h1>
+          <div className=" flex justify-center">
+            <div className="mt-10 border-1 w-[33vw] rounded-xl shadow bg-[#FFFFFF]">
+              <Form method="post" className="w-full">
+                <input
+                  type="hidden"
+                  name="redirectTo"
+                  value={SearchParams.get("redirectTo") ?? undefined}
+                />
+                <fieldset>
+                  {/* <legend className="sr-only">Login Or Register</legend>
               <label>
                 <input
                   type="radio"
@@ -125,85 +136,114 @@ export default function Login() {
                 />{" "}
                 Login
               </label> */}
-              <label>
-                {/* <input
+                  <label>
+                    {/* <input
                   type="radio"
                   name="loginType"
                   value="register"
                   defaultChecked={actionData?.fields?.loginType === "register"}
                 />{" "} */}
-                <Link to="/register" className="register-comp">
-                  New User Register
-                </Link>
-              </label>
-            </fieldset>
-            <div>
-              <label htmlFor="username-input">Username</label>
-              <input
-                type="text"
-                name="username"
-                id="username-input"
-                defaultValue={actionData?.fields?.username}
-                aria-invalid={Boolean(actionData?.fieldErrors?.username)}
-                aria-errormessage={
-                  actionData?.fieldErrors?.username
-                    ? "username-error"
-                    : undefined
-                }
-              />
-              {actionData?.fieldErrors?.username ? (
-                <p
-                  className="form-validation-error"
-                  role="alert"
-                  id="username-error"
-                >
-                  {actionData.fieldErrors.username}
-                </p>
-              ) : null}
+                    <div className="mt-6">
+                      <Link to="/register">
+                        Not a User?{" "}
+                        <span className="text-[#4F46E5]">Register Here</span>
+                      </Link>
+                    </div>
+                  </label>
+                </fieldset>
+                <div className="flex flex-col text-left px-12 py-6">
+                  <label className="font-sans" htmlFor="username-input">
+                    Username
+                  </label>
+                  <input
+                  required
+                    className="h-9 outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm"
+                    autoFocus
+                    type="text"
+                    name="username"
+                    id="username-input"
+                    defaultValue={actionData?.fields?.username}
+                    aria-invalid={Boolean(actionData?.fieldErrors?.username)}
+                    aria-errormessage={
+                      actionData?.fieldErrors?.username
+                        ? "username-error"
+                        : undefined
+                    }
+                  />
+                  {actionData?.fieldErrors?.username ? (
+                    <p
+                      className="form-validation-error"
+                      role="alert"
+                      id="username-error"
+                    >
+                      {actionData.fieldErrors.username}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="flex flex-col text-left px-12">
+                  <label className="font-sans" htmlFor="password-input">
+                    Password
+                  </label>
+                  <div className="h-9 flex items-center outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm justify-between">
+                    <input
+                    required
+                      className="w-full outline-none"
+                      autoFocus
+                      type={showPassword ? "text" : "password"}
+                      id="password-input"
+                      name="password"
+                      defaultValue={actionData?.fields?.password}
+                      aria-invalid={Boolean(actionData?.fieldErrors?.password)}
+                      aria-errormessage={
+                        actionData?.fieldErrors?.password
+                          ? "password-error"
+                          : undefined
+                      }
+                    />
+
+                    <p onClick={toggleShowPassword} className="text-center cursor-pointer">
+                      {showPassword ? (
+                        <AiOutlineEye />
+                      ) : (
+                        <AiOutlineEyeInvisible />
+                      )}
+                    </p>
+                  </div>
+
+                  {actionData?.fieldErrors?.password ? (
+                    <p
+                      className="form-validation-error"
+                      role="alert"
+                      id="password-error"
+                    >
+                      {actionData.fieldErrors.password}
+                    </p>
+                  ) : null}
+                </div>
+                <div id="form-error-message">
+                  {actionData?.formError ? (
+                    <p className="form-validation-error" role="alert">
+                      {actionData.formError}
+                    </p>
+                  ) : null}
+                </div>
+                <div className="text-right px-12 py-4 ">
+                  <Link to="/forgetpassword" className="text-[#4F46E5]">
+                    Forgot password?
+                  </Link>
+                </div>
+                <div className="px-12">
+                  <button
+                    type="submit"
+                    className="bg-[#4F46E5] mb-6 w-full py-2 rounded-md hover:bg-[#5850ee] text-white"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </Form>
             </div>
-            <div>
-              <label htmlFor="password-input">Password</label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password-input"
-                name="password"
-                defaultValue={actionData?.fields?.password}
-                aria-invalid={Boolean(actionData?.fieldErrors?.password)}
-                aria-errormessage={
-                  actionData?.fieldErrors?.password
-                    ? "password-error"
-                    : undefined
-                }
-              />
-               <p onClick={toggleShowPassword}>
-        {showPassword ? 'Hide Password' : 'Show Password'}
-      </p>
-              {actionData?.fieldErrors?.password ? (
-                <p
-                  className="form-validation-error"
-                  role="alert"
-                  id="password-error"
-                >
-                  {actionData.fieldErrors.password}
-                </p>
-              ) : null}
-            </div>
-            <div id="form-error-message">
-              {actionData?.formError ? (
-                <p className="form-validation-error" role="alert">
-                  {actionData.formError}
-                </p>
-              ) : null}
-            </div>
-            <Link to="/forgetpassword" className="register-comp">
-              Forgot password
-            </Link>
-            <button type="submit" className="button">
-              Submit
-            </button>
-          </Form>
-        </div>
-        <div className="links">
+          </div>
+          {/* <div className="links">
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -212,6 +252,7 @@ export default function Login() {
               <Link to="/jokes">Jokes</Link>
             </li>
           </ul>
+        </div> */}
         </div>
       </div>
     </>

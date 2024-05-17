@@ -4,17 +4,18 @@ import { Form, Link, useActionData } from "@remix-run/react";
 import { badRequest } from "~/utils/request.server";
 import { db } from "~/utils/db.server";
 import { createUserSeccion, register } from "~/utils/session.server";
+import Imgbg from "public/regbg.jpg"
 export const links: LinksFunction = () => [
     { rel: "stylesheet", href: styleUrl },
   ];
 
   // validate url
 function validateUrl(url: string) {
-  const urls = ["/jokes", "/", "https://remix.run"];
+  const urls = ["/dashboardcontainerv1/newoverview", "/", "https://remix.run"];
   if (urls.includes(url)) {
     return url;
   }
-  return "/jokes";
+  return "/dashboardcontainerv1/newoverview";
 }
   //action function
   export const action = async({request}:ActionArgs)=>{
@@ -25,7 +26,7 @@ function validateUrl(url: string) {
     const phone =form.get("phone");
     const passion=form.get("passion");
     const redirectTo = validateUrl(
-      (form.get("redirectTo") as string) || "/jokes"
+      (form.get("redirectTo") as string) || "/dashboardcontainerv1/newoverview"
     );
 
     if(
@@ -59,40 +60,74 @@ function validateUrl(url: string) {
 export default function Register() {
   const actionData=useActionData<typeof action>();
   return (
-    <div className="container">
-        <div className="content" data-light="">
-          <h1>Register</h1>
-          <Form method="post">
+    <div className="h-screen flex justify-center">
+      <div className="">
+        <img src={Imgbg} className="w-[50vw]" alt="" />
+      </div>
+        <div className="text-center" data-light="">
+          {/* <h1 className="text-2xl pt-10 font-serif font-extrabold mb-2">Register as new </h1> */}
+          <div className=" flex justify-center">
+            <div className="mt-10 border-1 w-[33vw] rounded-xl shadow bg-[#FFFFFF]">
+          <Form method="post" className="w-full">
           <fieldset>
           <label>
-          <Link to="/login" className="register-comp">Already have an account Login</Link>
+            <div className="pt-4 text-[#4F46E5]">
+           <Link to="/login">Already have an account Login</Link>
+            </div>
             </label>
             </fieldset>
-            <div>
-             <label htmlFor="username-input">Username</label>
-             <input type="text" name="username" id="username-input" 
+            <div className="flex flex-col text-left px-12 py-6">
+             <label className="font-sans" htmlFor="username-input">Username</label>
+             <input type="text" name="username" 
+             required
+             className="h-9 outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm"
+             autoFocus
+             id="username-input" 
              />
            </div>
-           <div>
+           <div className="flex flex-col text-left px-12">
              <label htmlFor="email-input">Email</label>
-             <input type="email" name="email" id="email-input" />
+             <input type="email" name="email" 
+             required
+             className="h-9 outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm"
+             autoFocus
+             id="email-input" />
            </div>
-           <div>
-             <label htmlFor="password-input">Password</label>
-             <input type="password" name="password" id="password-input" />
+           <div className="flex flex-col text-left px-12 pt-6">
+             <label className="font-sans" htmlFor="password-input">Password</label>
+             <input type="password" name="password" 
+             required
+             className="h-9 outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm"
+             autoFocus
+             id="password-input" />
            </div>
-           <div>
-             <label htmlFor="phone-input">Phone No</label>
-             <input type="number" name="phone" id="phone-input" />
+           <div className="flex flex-col text-left px-12 pt-6">
+             <label className="font-sans" htmlFor="phone-input">Phone No</label>
+             <input type="number" name="phone" 
+             required
+             className="h-9 outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm"
+             autoFocus
+             id="phone-input" />
            </div>
-           <div>
-             <label htmlFor="passion-input">Passion</label>
-             <input type="text" name="passion" id="passion-input" />
+           <div className="flex flex-col text-left px-12 pt-6">
+             <label className="font-sans" htmlFor="passion-input">Passion</label>
+             <input type="text" name="passion" 
+             required
+             className="h-9 outline-gray-300 mt-2 px-3 py-1 border shadow border-gray-300 rounded-sm"
+             autoFocus
+             id="passion-input" />
            </div>
-           <button type="submit" className="button">
-              Register
-            </button>
+           <div className="px-12 pt-8">
+                  <button
+                    type="submit"
+                    className="bg-[#007CFF] mb-6 w-full py-2 rounded-md hover:bg-[#2d88eb] text-white"
+                  >
+                    Submit
+                  </button>
+                </div>
           </Form>
+          </div>
+          </div>
           </div>
           </div>
   )

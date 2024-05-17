@@ -21,6 +21,9 @@ export default function IndexRoute(){
               <Link to="product">View our store</Link>
             </li>
             <li>
+              <Link to="counterroute">go on react</Link>
+            </li>
+            <li>
               <Link to="/jokes.rss">rss</Link>
             </li>
           </ul>
